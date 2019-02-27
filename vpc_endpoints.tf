@@ -73,7 +73,7 @@ resource "aws_security_group" "vpc_endpoints" {
   tags        = "${var.common_tags}"
 }
 
-resource "aws_security_group_rule" "vpce_kafka_https_ingress" {
+resource "aws_security_group_rule" "vpce_source_https_ingress" {
   count                    = "${var.interface_vpce_source_security_group_count}"
   description              = "Accept VPCE traffic"
   type                     = "ingress"
@@ -84,7 +84,7 @@ resource "aws_security_group_rule" "vpce_kafka_https_ingress" {
   security_group_id        = "${aws_security_group.vpc_endpoints.id}"
 }
 
-resource "aws_security_group_rule" "kafka_vpce_https_egress" {
+resource "aws_security_group_rule" "source_vpce_https_egress" {
   count                    = "${var.interface_vpce_source_security_group_count}"
   description              = "Allow outbound requests to VPC endpoints"
   type                     = "egress"
