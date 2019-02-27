@@ -91,6 +91,6 @@ resource "aws_security_group_rule" "source_vpce_https_egress" {
   protocol                 = "tcp"
   from_port                = 443
   to_port                  = 443
-  source_security_group_id = "${element(var.interface_vpce_source_security_group_ids, count.index)}"
-  security_group_id        = "${aws_security_group.vpc_endpoints.id}"
+  source_security_group_id = "${aws_security_group.vpc_endpoints.id}"
+  security_group_id        = "${element(var.interface_vpce_source_security_group_ids, count.index)}"
 }
