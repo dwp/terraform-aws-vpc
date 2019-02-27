@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "vpc_flow_logs_assume_role" {
 
 data "aws_iam_policy_document" "vpc_flow_logs" {
   statement {
-    sid       = "VpcFlowLogs_${var.vpc_name}"
+    sid       = "VpcFlowLogs${replace(var.vpc_name, "-", "")}"
     effect    = "Allow"
     resources = ["${aws_cloudwatch_log_group.vpc_flow_logs.arn}"]
 
