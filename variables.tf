@@ -60,6 +60,11 @@ variable "logs_endpoint" {
   description = "Place a CloudWatch Logs VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
+variable "monitoring_endpoint" {
+  default     = false
+  description = "Place a CloudWatch Monitoring VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
 variable "sns_endpoint" {
   default     = false
   description = "Place an SNS VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
