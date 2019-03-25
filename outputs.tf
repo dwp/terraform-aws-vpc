@@ -7,7 +7,7 @@ output "vpc_cidr_block" {
 }
 
 output "main_route_table_id" {
-  value = "${aws_vpc.vpc.vpc_main_route_table_id}"
+  value = "${aws_vpc.vpc.main_route_table_id}"
 }
 
 output "interface_vpce_sg_id" {
