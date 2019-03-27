@@ -30,21 +30,6 @@ variable "vpc_flow_log_traffic_type" {
   description = "The type of traffic ('ACCEPT', 'REJECT', or 'ALL') to log. Defaults to 'ALL'."
 }
 
-variable "s3_endpoint" {
-  default     = true
-  description = "Place an S3 VPC endpoint in this VPC. If set to true, you will also need to set `gateway_vpce_route_table_ids`"
-}
-
-variable "ssm_endpoint" {
-  default     = true
-  description = "Place an SSM VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
-}
-
-variable "ssmmessages_endpoint" {
-  default     = true
-  description = "Place an SSM Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
-}
-
 variable "dynamodb_endpoint" {
   default     = false
   description = "Place a DynamoDB VPC endpoint in this VPC. If set to true, you will also need to set `gateway_vpce_route_table_ids`"
@@ -70,9 +55,24 @@ variable "monitoring_endpoint" {
   description = "Place a CloudWatch Monitoring VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
+variable "s3_endpoint" {
+  default     = true
+  description = "Place an S3 VPC endpoint in this VPC. If set to true, you will also need to set `gateway_vpce_route_table_ids`"
+}
+
 variable "sns_endpoint" {
   default     = false
   description = "Place an SNS VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
+variable "ssm_endpoint" {
+  default     = true
+  description = "Place an SSM VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
+variable "ssmmessages_endpoint" {
+  default     = true
+  description = "Place an SSM Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "gateway_vpce_route_table_ids" {
