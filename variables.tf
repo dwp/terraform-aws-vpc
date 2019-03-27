@@ -45,6 +45,31 @@ variable "ec2messages_endpoint" {
   description = "Place an EC2 Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
+variable "ecrapi_endpoint" {
+  default     = false
+  description = "Place an ecr.api endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
+variable "ecrdkr_endpoint" {
+  default     = false
+  description = "Place an ecr.dkr endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
+variable "ecs_endpoint" {
+  default     = false
+  description = "Place an ecs endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
+variable "ecs-agent_endpoint" {
+  default     = false
+  description = "Place an ecs-agent endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
+variable "ecs-telemetry_endpoint" {
+  default     = false
+  description = "Place an ecs-telemetry endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
 variable "logs_endpoint" {
   default     = true
   description = "Place a CloudWatch Logs VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"

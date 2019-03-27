@@ -36,6 +36,56 @@ resource "aws_vpc_endpoint" "ec2" {
   private_dns_enabled = true
 }
 
+resource "aws_vpc_endpoint" "ecrapi" {
+  count               = "${var.ecrapi_endpoint ? 1 : 0}"
+  service_name        = "com.amazonaws.${var.region}.ecr.api"
+  vpc_id              = "${aws_vpc.vpc.id}"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = ["${aws_security_group.vpc_endpoints.id}"]
+  subnet_ids          = ["${var.interface_vpce_subnet_ids}"]
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "ecrdkr" {
+  count               = "${var.ecrdkr_endpoint ? 1 : 0}"
+  service_name        = "com.amazonaws.${var.region}.ecr.dkr"
+  vpc_id              = "${aws_vpc.vpc.id}"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = ["${aws_security_group.vpc_endpoints.id}"]
+  subnet_ids          = ["${var.interface_vpce_subnet_ids}"]
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "ecs" {
+  count               = "${var.ecs_endpoint ? 1 : 0}"
+  service_name        = "com.amazonaws.${var.region}.ecs"
+  vpc_id              = "${aws_vpc.vpc.id}"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = ["${aws_security_group.vpc_endpoints.id}"]
+  subnet_ids          = ["${var.interface_vpce_subnet_ids}"]
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "ecs_agent" {
+  count               = "${var.ecs-agent_endpoint ? 1 : 0}"
+  service_name        = "com.amazonaws.${var.region}.ecs-agent"
+  vpc_id              = "${aws_vpc.vpc.id}"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = ["${aws_security_group.vpc_endpoints.id}"]
+  subnet_ids          = ["${var.interface_vpce_subnet_ids}"]
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "ecs_telemetry" {
+  count               = "${var.ecs-agent_endpoint ? 1 : 0}"
+  service_name        = "com.amazonaws.${var.region}.ecs-telemetry"
+  vpc_id              = "${aws_vpc.vpc.id}"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = ["${aws_security_group.vpc_endpoints.id}"]
+  subnet_ids          = ["${var.interface_vpce_subnet_ids}"]
+  private_dns_enabled = true
+}
+
 resource "aws_vpc_endpoint" "ssmmessages" {
   count               = "${var.ssmmessages_endpoint ? 1 : 0}"
   service_name        = "com.amazonaws.${var.region}.ssmmessages"
