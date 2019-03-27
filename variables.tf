@@ -45,6 +45,11 @@ variable "ssmmessages_endpoint" {
   description = "Place an SSM Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
+variable "dynamodb_endpoint" {
+  default     = false
+  description = "Place a DynamoDB VPC endpoint in this VPC. If set to true, you will also need to set `gateway_vpce_route_table_ids`"
+}
+
 variable "ec2_endpoint" {
   default     = true
   description = "Place an EC2 VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
