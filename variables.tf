@@ -90,6 +90,11 @@ variable "sns_endpoint" {
   description = "Place an SNS VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
+variable "sqs_endpoint" {
+  default     = false
+  description = "Place an SQS VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
 variable "ssm_endpoint" {
   default     = false
   description = "Place an SSM VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
