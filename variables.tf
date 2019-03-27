@@ -36,12 +36,12 @@ variable "dynamodb_endpoint" {
 }
 
 variable "ec2_endpoint" {
-  default     = true
+  default     = false
   description = "Place an EC2 VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ec2messages_endpoint" {
-  default     = true
+  default     = false
   description = "Place an EC2 Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
@@ -56,7 +56,7 @@ variable "monitoring_endpoint" {
 }
 
 variable "s3_endpoint" {
-  default     = true
+  default     = false
   description = "Place an S3 VPC endpoint in this VPC. If set to true, you will also need to set `gateway_vpce_route_table_ids`"
 }
 
@@ -66,12 +66,12 @@ variable "sns_endpoint" {
 }
 
 variable "ssm_endpoint" {
-  default     = true
+  default     = false
   description = "Place an SSM VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ssmmessages_endpoint" {
-  default     = true
+  default     = false
   description = "Place an SSM Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
