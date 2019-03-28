@@ -15,6 +15,18 @@ variable "region" {
   description = "The region in which to deploy the VPC."
 }
 
+variable "interface_vpce_source_security_group_count" {
+  description = "The number of security group IDs given in interface_vpce_source_security_group_ids (to workaround https://github.com/hashicorp/terraform/issues/12570)."
+}
+
+variable "interface_vpce_source_security_group_ids" {
+  description = "A list of security group IDs that will be allowed to reach the Interface VPCs. Note that when setting this you must also set `interface_vpce_source_security_group_count` (see above)."
+}
+
+variable "interface_vpce_subnet_ids" {
+  description = "A list of subnet IDs that all Interface VPC endpoints will be attached to"
+}
+
 variable "vpc_enable_dns_hostnames" {
   default     = true
   description = "A boolean flag to enable/disable DNS hostnames in the VPC. Defaults to true."
@@ -108,21 +120,6 @@ variable "ssmmessages_endpoint" {
 variable "gateway_vpce_route_table_ids" {
   default     = []
   description = "A list of one or more route table IDs for Gateway VPC Endpoint rules to be added to."
-}
-
-variable "interface_vpce_source_security_group_count" {
-  default     = 0
-  description = "The number of security group IDs given in interface_vpce_source_security_group_ids (to workaround https://github.com/hashicorp/terraform/issues/12570)."
-}
-
-variable "interface_vpce_source_security_group_ids" {
-  default     = []
-  description = "A list of security group IDs that will be allowed to reach the Interface VPCs. Note that when setting this you must also set `interface_vpce_source_security_group_count` (see above)."
-}
-
-variable "interface_vpce_subnet_ids" {
-  default     = []
-  description = "A list of subnet IDs that all Interface VPC endpoints will be attached to"
 }
 
 variable "common_tags" {

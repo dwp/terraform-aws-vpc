@@ -20,15 +20,29 @@ module "vpc" {
   interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
   interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
 }
+```
 
-resource "aws_subnet" "main" {
-  vpc_id            = "${module.vpc.vpc_id}"
-  cidr_block        = "${module.vpc.vpc_cidr_block}"
-  availability_zone = "eu-west-2a"
+### Examples
+
+#### Adding Endpoints
+
+The example below shows how to create a VPC with SNS and SQS VPC endpoints:
+
+```
+module "vpc" {
+  source                                     = "dwp/vpc/aws"
+  vpc_name                                   = "main"
+  region                                     = "eu-west-2"
+  vpc_cidr_block                             = "192.168.0.0/24"
+  interface_vpce_source_security_group_count = 1
+  interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
+  interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
+  sns_endpoint                               = true
+  sqs_endpoint                               = true
 }
 ```
 
-### Gateway Endpoint Configuration
+#### Gateway Endpoint Configuration
 
 S3 and DynamoDB VPC endpoints are Gateway endpoints, so require slightly
 different configuration.  An example for S3 is provided below. For brevity, it
@@ -46,12 +60,6 @@ module "vpc" {
   interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
   interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
   gateway_vpce_route_table_ids               = ["${module.vpc.main_route_table_id}"]
-}
-
-resource "aws_subnet" "main" {
-  vpc_id            = "${module.vpc.vpc_id}"
-  cidr_block        = "${module.vpc.vpc_cidr_block}"
-  availability_zone = "eu-west-2a"
 }
 ```
 
