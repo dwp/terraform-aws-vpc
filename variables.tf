@@ -20,10 +20,12 @@ variable "interface_vpce_source_security_group_count" {
 }
 
 variable "interface_vpce_source_security_group_ids" {
+  type        = "list"
   description = "A list of security group IDs that will be allowed to reach the Interface VPCs. Note that when setting this you must also set `interface_vpce_source_security_group_count` (see above)."
 }
 
 variable "interface_vpce_subnet_ids" {
+  type        = "list"
   description = "A list of subnet IDs that all Interface VPC endpoints will be attached to"
 }
 
