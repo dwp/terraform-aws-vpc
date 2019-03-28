@@ -37,47 +37,47 @@ variable "dynamodb_endpoint" {
 
 variable "ec2_endpoint" {
   default     = false
-  description = "Place an EC2 VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an EC2 VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ec2messages_endpoint" {
   default     = false
-  description = "Place an EC2 Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an EC2 Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ecrapi_endpoint" {
   default     = false
-  description = "Place an ecr.api endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an ecr.api endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ecrdkr_endpoint" {
   default     = false
-  description = "Place an ecr.dkr endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an ecr.dkr endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ecs_endpoint" {
   default     = false
-  description = "Place an ecs endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an ecs endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ecs-agent_endpoint" {
   default     = false
-  description = "Place an ecs-agent endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an ecs-agent endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ecs-telemetry_endpoint" {
   default     = false
-  description = "Place an ecs-telemetry endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an ecs-telemetry endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "logs_endpoint" {
   default     = true
-  description = "Place a CloudWatch Logs VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place a CloudWatch Logs VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "monitoring_endpoint" {
   default     = false
-  description = "Place a CloudWatch Monitoring VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place a CloudWatch Monitoring VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "s3_endpoint" {
@@ -87,22 +87,22 @@ variable "s3_endpoint" {
 
 variable "sns_endpoint" {
   default     = false
-  description = "Place an SNS VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an SNS VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "sqs_endpoint" {
   default     = false
-  description = "Place an SQS VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an SQS VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ssm_endpoint" {
   default     = false
-  description = "Place an SSM VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an SSM VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "ssmmessages_endpoint" {
   default     = false
-  description = "Place an SSM Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an SSM Messages VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "gateway_vpce_route_table_ids" {
@@ -117,7 +117,7 @@ variable "interface_vpce_source_security_group_count" {
 
 variable "interface_vpce_source_security_group_ids" {
   default     = []
-  description = "A list of security group IDs that will be allowed to reach the Interface VPCs"
+  description = "A list of security group IDs that will be allowed to reach the Interface VPCs. Note that when setting this you must also set `interface_vpce_source_security_group_count` (see above)."
 }
 
 variable "interface_vpce_subnet_ids" {
