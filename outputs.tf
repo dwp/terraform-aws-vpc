@@ -25,20 +25,19 @@ output "interface_vpce_sg_id" {
 # 2. concat() joins the 2 lists (the potentially empty list of the resource in
 #    question, and the list from step 1)
 # 3. element() returns the first element of that newly combined list; it'll
-#    either be the resource's attribute, or the value '0' denoting a false value
-#    of the boolean flag variable
+#    either be the resource's attribute, or an empty string
 output "s3_prefix_list_id" {
-  value = "${element(concat(aws_vpc_endpoint.s3.*.prefix_list_id, list(var.s3_endpoint)), 0)}"
+  value = "${element(concat(aws_vpc_endpoint.s3.*.prefix_list_id, list("")), 0)}"
 }
 
 output "dynamodb_prefix_list_id" {
-  value = "${element(concat(aws_vpc_endpoint.dynamodb.*.prefix_list_id, list(var.dynamodb_endpoint)), 0)}"
+  value = "${element(concat(aws_vpc_endpoint.dynamodb.*.prefix_list_id, list("")), 0)}"
 }
 
 output "ssm_iam_role_name" {
-  value = "${element(concat(aws_iam_role.ssm.*.name, list(var.ssm_endpoint)), 0)}"
+  value = "${element(concat(aws_iam_role.ssm.*.name, list("")), 0)}"
 }
 
 output "ssm_instance_profile_name" {
-  value = "${element(concat(aws_iam_instance_profile.ssm.*.name, list(var.ssm_endpoint)), 0)}"
+  value = "${element(concat(aws_iam_instance_profile.ssm.*.name, list("")), 0)}"
 }
