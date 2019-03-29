@@ -20,18 +20,25 @@ output "interface_vpce_sg_id" {
 # but you end up running into https://github.com/hashicorp/hil/issues/50 so we
 # use the workaround from that issue to achieve the same goal
 
+# To understand how this works
+# 1. list() converts the boolean flag into a list, so that...
+# 2. concat() joins the 2 lists (the potentially empty list of the resource in
+#    question, and the list from step 1)
+# 3. element() returns the first element of that newly combined list; it'll
+#    either be the resource's attribute, or the value '0' denoting a false value
+#    of the boolean flag variable
 output "s3_prefix_list_id" {
-  value = "${element(compact(concat(list(var.s3_endpoint), aws_vpc_endpoint.s3.*.prefix_list_id)), 0)}"
+  value = "${element(concat(aws_vpc_endpoint.s3.*.prefix_list_id, list(var.s3_endpoint)), 0)}"
 }
 
 output "dynamodb_prefix_list_id" {
-  value = "${element(compact(concat(list(var.dynamodb_endpoint), aws_vpc_endpoint.dynamodb.*.prefix_list_id)), 0)}"
+  value = "${element(concat(aws_vpc_endpoint.dynamodb.*.prefix_list_id, list(var.dynamodb_endpoint)), 0)}"
 }
 
 output "ssm_iam_role_name" {
-  value = "${element(compact(concat(list(var.ssm_endpoint), aws_iam_role.ssm.*.name)), 0)}"
+  value = "${element(concat(aws_iam_role.ssm.*.name, list(var.ssm_endpoint)), 0)}"
 }
 
 output "ssm_instance_profile_name" {
-  value = "${element(compact(concat(list(var.ssm_endpoint), aws_iam_instance_profile.ssm.*.name)), 0)}"
+  value = "${element(concat(aws_iam_instance_profile.ssm.*.name, list(var.ssm_endpoint)), 0)}"
 }
