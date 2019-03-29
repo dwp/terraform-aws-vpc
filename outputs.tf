@@ -23,9 +23,9 @@ output "dynamodb_prefix_list_id" {
 }
 
 output "ssm_iam_role_name" {
-  value = "${aws_iam_role.ssm.*.name}"
+  value = "${aws_iam_role.ssm.0.name}"
 }
 
 output "ssm_instance_profile_name" {
-  value = "${aws_iam_instance_profile.ssm.*.name}"
+  value = "${aws_iam_instance_profile.ssm.0.name}"
 }
