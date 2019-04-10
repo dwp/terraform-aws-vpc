@@ -41,3 +41,7 @@ output "ssm_iam_role_name" {
 output "ssm_instance_profile_name" {
   value = "${element(concat(aws_iam_instance_profile.ssm.*.name, list("")), 0)}"
 }
+
+output "ecr_dkr_domain_name" {
+  value = "dkr.ecr.${var.region}.amazonaws.com"
+}
