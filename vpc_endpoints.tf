@@ -96,6 +96,16 @@ resource "aws_vpc_endpoint" "ssmmessages" {
   private_dns_enabled = true
 }
 
+resource "aws_vpc_endpoint" "kms" {
+  count               = "${var.kms_endpoint ? 1 : 0}"
+  service_name        = "com.amazonaws.${var.region}.kms"
+  vpc_id              = "${aws_vpc.vpc.id}"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = ["${aws_security_group.vpc_endpoints.id}"]
+  subnet_ids          = ["${var.interface_vpce_subnet_ids}"]
+  private_dns_enabled = true
+}
+
 resource "aws_vpc_endpoint" "logs" {
   count               = "${var.logs_endpoint ? 1 : 0}"
   service_name        = "com.amazonaws.${var.region}.logs"

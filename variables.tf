@@ -84,6 +84,11 @@ variable "ecs-telemetry_endpoint" {
   description = "Place an ecs-telemetry endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
+variable "kms_endpoint" {
+  default     = false
+  description = "Place a KMS endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
 variable "logs_endpoint" {
   default     = true
   description = "Place a CloudWatch Logs VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
