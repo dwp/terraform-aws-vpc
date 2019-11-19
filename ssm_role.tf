@@ -1,7 +1,7 @@
 resource "aws_iam_role" "ssm" {
-  count              = "${var.ssm_endpoint ? 1 : 0}"
+  count              = var.ssm_endpoint ? 1 : 0
   name               = "ssm_${var.vpc_name}"
-  assume_role_policy = "${data.aws_iam_policy_document.ec2_assume_role.json}"
+  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_for_ssm_attachment" {

@@ -168,7 +168,7 @@ resource "aws_security_group_rule" "vpce_source_https_ingress" {
   protocol                 = "tcp"
   from_port                = 443
   to_port                  = 443
-  source_security_group_id = element(var.interface_vpce_source_security_group_ids, count.index)
+  source_security_group_id = var.interface_vpce_source_security_group_ids[count.index]
   security_group_id        = aws_security_group.vpc_endpoints.id
 }
 
@@ -180,5 +180,5 @@ resource "aws_security_group_rule" "source_vpce_https_egress" {
   from_port                = 443
   to_port                  = 443
   source_security_group_id = aws_security_group.vpc_endpoints.id
-  security_group_id        = element(var.interface_vpce_source_security_group_ids, count.index)
+  security_group_id        = var.interface_vpce_source_security_group_ids[count.index]
 }
