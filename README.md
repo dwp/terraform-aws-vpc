@@ -89,6 +89,13 @@ further information
 * dynamodb
 * [EMR docs](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-clusters-in-a-vpc.html)
 
+#### EMR with EMRFS and Glue
+
+* s3
+* dynamodb
+* glue
+* [EMR docs](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-clusters-in-a-vpc.html)
+
 #### EMR with Debugging
 
 * s3
