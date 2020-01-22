@@ -6,6 +6,14 @@ resource "aws_vpc_endpoint" "s3" {
   route_table_ids   = var.gateway_vpce_route_table_ids
 }
 
+resource "aws_vpc_endpoint" "dynamodb" {
+  count             = var.dynamodb_endpoint ? 1: 0
+  service_name      = "com.amazonaws.${var.region}.dynamodb"
+  vpc_id            = aws_vpc.vpc.id
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = var.gateway_vpce_route_table_ids
+}
+
 resource "aws_vpc_endpoint" "ssm" {
   count               = var.ssm_endpoint ? 1 : 0
   service_name        = "com.amazonaws.${var.region}.ssm"
@@ -134,14 +142,6 @@ resource "aws_vpc_endpoint" "sns" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
-}
-
-resource "aws_vpc_endpoint" "dynamodb" {
-  count             = var.dynamodb_endpoint ? 1: 0
-  service_name      = "com.amazonaws.${var.region}.dynamodb"
-  vpc_id            = aws_vpc.vpc.id
-  vpc_endpoint_type = "Gateway"
-  route_table_ids   = [var.gateway_vpce_route_table_ids]
 }
 
 resource "aws_vpc_endpoint" "sqs" {
