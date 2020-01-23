@@ -59,6 +59,7 @@ data "aws_iam_policy_document" "vpc_flow_logs" {
 resource "aws_iam_role" "vpc_flow_logs" {
   name               = "vpc_flow_logs_${var.vpc_name}"
   assume_role_policy = data.aws_iam_policy_document.vpc_flow_logs_assume_role.json
+  tags               = var.common_tags
 }
 
 resource "aws_iam_role_policy" "vpc_flow_logs" {
