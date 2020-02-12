@@ -1,5 +1,5 @@
 resource "aws_vpc_endpoint" "s3" {
-  count             = var.s3_endpoint ? 1: 0
+  count             = var.s3_endpoint ? 1 : 0
   service_name      = "com.amazonaws.${var.region}.s3"
   vpc_id            = aws_vpc.vpc.id
   vpc_endpoint_type = "Gateway"
@@ -7,7 +7,7 @@ resource "aws_vpc_endpoint" "s3" {
 }
 
 resource "aws_vpc_endpoint" "dynamodb" {
-  count             = var.dynamodb_endpoint ? 1: 0
+  count             = var.dynamodb_endpoint ? 1 : 0
   service_name      = "com.amazonaws.${var.region}.dynamodb"
   vpc_id            = aws_vpc.vpc.id
   vpc_endpoint_type = "Gateway"
@@ -157,6 +157,16 @@ resource "aws_vpc_endpoint" "sqs" {
 resource "aws_vpc_endpoint" "glue" {
   count               = var.glue_endpoint ? 1 : 0
   service_name        = "com.amazonaws.${var.region}.glue"
+  vpc_id              = aws_vpc.vpc.id
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  subnet_ids          = var.interface_vpce_subnet_ids
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "elasticmapreduce" {
+  count               = var.emr_endpoint ? 1 : 0
+  service_name        = "com.amazonaws.${var.region}.elasticmapreduce"
   vpc_id              = aws_vpc.vpc.id
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
