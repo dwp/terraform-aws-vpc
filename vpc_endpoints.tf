@@ -174,6 +174,16 @@ resource "aws_vpc_endpoint" "elasticmapreduce" {
   private_dns_enabled = true
 }
 
+resource "aws_vpc_endpoint" "ec2autoscaling" {
+  count               = var.ec2autoscaling_endpoint ? 1 : 0
+  service_name        = "com.amazonaws.${var.region}.autoscaling"
+  vpc_id              = aws_vpc.vpc.id
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  subnet_ids          = var.interface_vpce_subnet_ids
+  private_dns_enabled = true
+}
+
 resource "aws_security_group" "vpc_endpoints" {
   name        = "vpc-endpoints-${var.vpc_name}"
   description = "Allows instances to reach Interface VPC endpoints"
