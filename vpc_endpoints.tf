@@ -164,6 +164,16 @@ resource "aws_vpc_endpoint" "glue" {
   private_dns_enabled = true
 }
 
+resource "aws_vpc_endpoint" "secretsmanager" {
+  count               = var.secretsmanager_endpoint ? 1 : 0
+  service_name        = "com.amazonaws.${var.region}.secretsmanager"
+  vpc_id              = aws_vpc.vpc.id
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  subnet_ids          = var.interface_vpce_subnet_ids
+  private_dns_enabled = true
+}
+
 resource "aws_vpc_endpoint" "elasticmapreduce" {
   count               = var.emr_endpoint ? 1 : 0
   service_name        = "com.amazonaws.${var.region}.elasticmapreduce"
