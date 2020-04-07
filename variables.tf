@@ -129,6 +129,11 @@ variable "glue_endpoint" {
   description = "Place an Glue VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
+variable "secretsmanager_endpoint" {
+  default     = false
+  description = "Place a Secrets Manager VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
 variable "emr_endpoint" {
   default     = false
   description = "Place an ElasticMapReduce VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
