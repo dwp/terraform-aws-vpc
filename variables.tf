@@ -144,6 +144,11 @@ variable "ec2autoscaling_endpoint" {
   description = "Place an EC2 Auto Scaling VPC endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
+variable "elasticloadbalancing_endpoint" {
+  default     = false
+  description = "Place an elasticloadbalancing endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
+}
+
 variable "gateway_vpce_route_table_ids" {
   default     = []
   description = "A list of one or more route table IDs for Gateway VPC Endpoint rules to be added to."
