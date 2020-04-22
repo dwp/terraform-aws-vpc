@@ -146,7 +146,7 @@ variable "ec2autoscaling_endpoint" {
 
 variable "elasticloadbalancing_endpoint" {
   default     = false
-  description = "Place an ecr.api endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
+  description = "Place an elasticloadbalancing endpoint in this VPC. If set to true, you will also need to set `interface_vpce_source_security_group_ids` and `interface_vpce_subnet_ids`"
 }
 
 variable "gateway_vpce_route_table_ids" {
