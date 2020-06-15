@@ -234,6 +234,16 @@ resource "aws_vpc_endpoint" "kinesis-firehose" {
   private_dns_enabled = true
 }
 
+resource "aws_vpc_endpoint" "internet_proxy" {
+  count               = var.internet_proxy_endpoint_service_name != null ? 1 : 0
+  vpc_id              = aws_vpc.vpc.id
+  service_name        = var.internet_proxy_endpoint_service_name
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  subnet_ids          = var.interface_vpce_subnet_ids
+  private_dns_enabled = false
+}
+
 resource "aws_security_group" "vpc_endpoints" {
   name        = "vpc-endpoints-${var.vpc_name}"
   description = "Allows instances to reach Interface VPC endpoints"
@@ -259,6 +269,28 @@ resource "aws_security_group_rule" "source_vpce_https_egress" {
   protocol                 = "tcp"
   from_port                = 443
   to_port                  = 443
+  source_security_group_id = aws_security_group.vpc_endpoints.id
+  security_group_id        = var.interface_vpce_source_security_group_ids[count.index]
+}
+
+resource "aws_security_group_rule" "proxy_vpce_source_ingress" {
+  count                    = var.internet_proxy_endpoint_service_name != null ? var.interface_vpce_source_security_group_count : 0
+  description              = "Accept Internet Proxy VPCE traffic"
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 3128
+  to_port                  = 3128
+  source_security_group_id = var.interface_vpce_source_security_group_ids[count.index]
+  security_group_id        = aws_security_group.vpc_endpoints.id
+}
+
+resource "aws_security_group_rule" "source_proxy_vpce_egress" {
+  count                    = var.internet_proxy_endpoint_service_name != null ? var.interface_vpce_source_security_group_count : 0
+  description              = "Allow outbound requests to Internet Proxy VPC endpoint"
+  type                     = "egress"
+  protocol                 = "tcp"
+  from_port                = 3128
+  to_port                  = 3128
   source_security_group_id = aws_security_group.vpc_endpoints.id
   security_group_id        = var.interface_vpce_source_security_group_ids[count.index]
 }

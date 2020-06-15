@@ -34,6 +34,10 @@ output "ssm_instance_profile_name" {
   value = concat(aws_iam_instance_profile.ssm.*.name, list(""))[0]
 }
 
+output "internet_proxy_vpce_dns_entries" {
+  value = concat(aws_vpc_endpoint.internet_proxy.*.dns_entry, list(""))[0]
+}
+
 output "ecr_dkr_domain_name" {
   value = "dkr.ecr.${var.region}.amazonaws.com"
 }
