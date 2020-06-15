@@ -224,9 +224,9 @@ resource "aws_vpc_endpoint" "application_autoscaling" {
   private_dns_enabled = true
 }
 
-resource "aws_vpc_endpoint" "firehose" {
-  count               = var.firehose_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.firehose"
+resource "aws_vpc_endpoint" "kinesis-firehose" {
+  count               = var.kinesis_firehose_endpoint ? 1 : 0
+  service_name        = "com.amazonaws.${var.region}.kinesis-firehose"
   vpc_id              = aws_vpc.vpc.id
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
