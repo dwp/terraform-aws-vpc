@@ -7,7 +7,7 @@ resource "aws_vpc_endpoint" "s3" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -20,7 +20,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -35,7 +35,7 @@ resource "aws_vpc_endpoint" "ssm" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -50,7 +50,7 @@ resource "aws_vpc_endpoint" "ec2messages" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -65,7 +65,7 @@ resource "aws_vpc_endpoint" "ec2" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -80,7 +80,7 @@ resource "aws_vpc_endpoint" "ecrapi" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -105,7 +105,7 @@ resource "aws_vpc_endpoint" "ecs" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -120,7 +120,7 @@ resource "aws_vpc_endpoint" "ecs_agent" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -135,7 +135,7 @@ resource "aws_vpc_endpoint" "ecs_telemetry" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -150,7 +150,7 @@ resource "aws_vpc_endpoint" "ssmmessages" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -165,7 +165,7 @@ resource "aws_vpc_endpoint" "kms" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -180,7 +180,7 @@ resource "aws_vpc_endpoint" "logs" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -195,7 +195,7 @@ resource "aws_vpc_endpoint" "monitoring" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -220,7 +220,7 @@ resource "aws_vpc_endpoint" "sqs" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -235,7 +235,7 @@ resource "aws_vpc_endpoint" "glue" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -250,7 +250,7 @@ resource "aws_vpc_endpoint" "secretsmanager" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -265,7 +265,7 @@ resource "aws_vpc_endpoint" "elasticmapreduce" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -280,7 +280,7 @@ resource "aws_vpc_endpoint" "ec2autoscaling" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -295,7 +295,7 @@ resource "aws_vpc_endpoint" "elasticloadbalancing" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -340,7 +340,7 @@ resource "aws_vpc_endpoint" "kinesis-firehose" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
@@ -351,7 +351,7 @@ resource "aws_security_group" "vpc_endpoints" {
 
   tags = merge(
     var.common_tags,
-    map("Name", var.vpc_name)
+    { Name = var.vpc_name }
   )
 }
 
