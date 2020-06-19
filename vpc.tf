@@ -23,7 +23,11 @@ resource "aws_flow_log" "flow_log" {
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   name              = "/aws/vpc-flow-logs/${var.vpc_name}"
   retention_in_days = var.vpc_flow_log_retention_days
-  tags              = var.common_tags
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 data "aws_iam_policy_document" "vpc_flow_logs_assume_role" {
@@ -59,7 +63,11 @@ data "aws_iam_policy_document" "vpc_flow_logs" {
 resource "aws_iam_role" "vpc_flow_logs" {
   name               = "vpc_flow_logs_${var.vpc_name}"
   assume_role_policy = data.aws_iam_policy_document.vpc_flow_logs_assume_role.json
-  tags               = var.common_tags
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_iam_role_policy" "vpc_flow_logs" {

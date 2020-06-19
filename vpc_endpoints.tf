@@ -4,6 +4,11 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_id            = aws_vpc.vpc.id
   vpc_endpoint_type = "Gateway"
   route_table_ids   = var.gateway_vpce_route_table_ids
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "dynamodb" {
@@ -12,6 +17,11 @@ resource "aws_vpc_endpoint" "dynamodb" {
   vpc_id            = aws_vpc.vpc.id
   vpc_endpoint_type = "Gateway"
   route_table_ids   = var.gateway_vpce_route_table_ids
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "ssm" {
@@ -22,6 +32,11 @@ resource "aws_vpc_endpoint" "ssm" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "ec2messages" {
@@ -32,6 +47,11 @@ resource "aws_vpc_endpoint" "ec2messages" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "ec2" {
@@ -42,6 +62,11 @@ resource "aws_vpc_endpoint" "ec2" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "ecrapi" {
@@ -52,6 +77,11 @@ resource "aws_vpc_endpoint" "ecrapi" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "ecrdkr" {
@@ -72,6 +102,11 @@ resource "aws_vpc_endpoint" "ecs" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "ecs_agent" {
@@ -82,6 +117,11 @@ resource "aws_vpc_endpoint" "ecs_agent" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "ecs_telemetry" {
@@ -92,6 +132,11 @@ resource "aws_vpc_endpoint" "ecs_telemetry" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "ssmmessages" {
@@ -102,6 +147,11 @@ resource "aws_vpc_endpoint" "ssmmessages" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "kms" {
@@ -112,6 +162,11 @@ resource "aws_vpc_endpoint" "kms" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "logs" {
@@ -122,6 +177,11 @@ resource "aws_vpc_endpoint" "logs" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "monitoring" {
@@ -132,6 +192,11 @@ resource "aws_vpc_endpoint" "monitoring" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "sns" {
@@ -152,6 +217,11 @@ resource "aws_vpc_endpoint" "sqs" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "glue" {
@@ -162,6 +232,11 @@ resource "aws_vpc_endpoint" "glue" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "secretsmanager" {
@@ -172,6 +247,11 @@ resource "aws_vpc_endpoint" "secretsmanager" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "elasticmapreduce" {
@@ -182,6 +262,11 @@ resource "aws_vpc_endpoint" "elasticmapreduce" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "ec2autoscaling" {
@@ -192,6 +277,11 @@ resource "aws_vpc_endpoint" "ec2autoscaling" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "elasticloadbalancing" {
@@ -202,6 +292,11 @@ resource "aws_vpc_endpoint" "elasticloadbalancing" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "events" {
@@ -212,6 +307,11 @@ resource "aws_vpc_endpoint" "events" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "application_autoscaling" {
@@ -222,6 +322,11 @@ resource "aws_vpc_endpoint" "application_autoscaling" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_vpc_endpoint" "kinesis-firehose" {
@@ -232,13 +337,22 @@ resource "aws_vpc_endpoint" "kinesis-firehose" {
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_security_group" "vpc_endpoints" {
   name        = "vpc-endpoints-${var.vpc_name}"
   description = "Allows instances to reach Interface VPC endpoints"
   vpc_id      = aws_vpc.vpc.id
-  tags        = var.common_tags
+
+  tags = merge(
+    var.common_tags,
+    map("Name", var.vpc_name)
+  )
 }
 
 resource "aws_security_group_rule" "vpce_source_https_ingress" {
