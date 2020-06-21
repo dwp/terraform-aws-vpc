@@ -344,6 +344,21 @@ resource "aws_vpc_endpoint" "kinesis-firehose" {
   )
 }
 
+resource "aws_vpc_endpoint" "efs" {
+  count               = var.efs_endpoint ? 1 : 0
+  service_name        = "com.amazonaws.${var.region}.elasticfilesystem"
+  vpc_id              = aws_vpc.vpc.id
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  subnet_ids          = var.interface_vpce_subnet_ids
+  private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    { Name = var.vpc_name }
+  )
+}
+
 resource "aws_security_group" "vpc_endpoints" {
   name        = "vpc-endpoints-${var.vpc_name}"
   description = "Allows instances to reach Interface VPC endpoints"
