@@ -22,6 +22,8 @@ and recreated, which may cause downtime.
    have a VPC endpoint created.
    * This list can be joined with `,` for use in `NO_PROXY` env vars or with `|`
    for use in the JVM `http.nonProxyHosts` flag
+ * The module can now deploy VPC Endpoints for custom services, see
+ [examples section](#adding-endpoints-for-custom-services---v3x)
 
 ### Default Configuration
 In its simplest form, this module will create a VPC with VPC Flow Logs enabled.
@@ -54,7 +56,7 @@ The names of the services are the ones found in the
 [AWS Service Endpoints and Quotas documentation](https://docs.aws.amazon.com/general/latest/gr/aws-service-information.html),
 not including the full DNS name, as per the following example.
 
-```
+```hcl-terraform
 module "vpc" {
   source                                     = "dwp/vpc/aws"
   vpc_name                                   = "main"
@@ -77,6 +79,37 @@ module "vpc" {
 }
 ```
 
+#### Adding Endpoints for custom services - v3.x+
+
+After version 3 this module can deploy VPC Endpoints for custom services, and creates security
+group rules to allow traffic to/from the custom service endpoints.
+
+```hcl-terraform
+module "vpc" {
+  source                                     = "dwp/vpc/aws"
+  vpc_name                                   = "main"
+  region                                     = "eu-west-2"
+  vpc_cidr_block                             = "192.168.0.0/24"
+  interface_vpce_source_security_group_count = 1
+  interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
+  interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
+
+  custom_vpce_services = [
+    {
+      key          = "my-service"
+      service_name = "com.amazonaws.vpce.eu-west-2.vpce-svc-abcd1234"
+      port         = 3128
+    }
+  ]
+}
+```
+The `key` is used to provide a friendly name when accessing the DNS name output:
+
+```hcl-terraform
+resource "aws_resource" "r" {
+  service_dns_name =  module.vpc.custom_vpce_dns_names["my-service"][0]
+}
+```
 
 #### Adding Endpoints - v2.x
 

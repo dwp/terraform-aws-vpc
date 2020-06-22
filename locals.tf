@@ -9,5 +9,13 @@ locals {
 
   gateway_endpoints_to_create = setintersection(var.aws_vpce_services, local.gateway_services)
 
-  all_aws_endpoints = merge(aws_vpc_endpoint.aws_interface_vpc_endpoints, aws_vpc_endpoint.aws_gateway_vpc_endpoints)
+  # Creates an exhaustive list of tuples of the form [<security_group_id>, <port>]
+  # where each <security_group_id> is one of the externally provided Security Group IDs
+  # and <port> is one of the custom vpce services ports
+  sg_id_to_port_mapping = tolist(setproduct(var.interface_vpce_source_security_group_ids, var.custom_vpce_services[*].port))
+
+  service_names_with_dns      = setunion(local.interface_endpoints_to_create, var.custom_vpce_services[*].key)
+  endpoint_resources_with_dns = merge(aws_vpc_endpoint.custom_vpc_endpoints, aws_vpc_endpoint.aws_interface_vpc_endpoints)
+
+
 }

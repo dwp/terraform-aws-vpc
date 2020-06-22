@@ -42,14 +42,19 @@ variable "vpc_flow_log_traffic_type" {
 
 variable "aws_vpce_services" {
   type        = set(string)
-  description = "List of AWS Service names to create VPC Endpoints for. By default only the 'logs' service endpoint is provided"
+  description = "Set of AWS Service names to create VPC Endpoints for. By default only the 'logs' service endpoint is provided"
   default     = ["logs"]
 }
 
 variable "custom_vpce_services" {
-  type        = map(string)
-  description = "Map of service names to ports for custom VPC Endpoint services"
-  default     = {}
+  type = set(object({
+    key          = string
+    service_name = string
+    port         = number
+  }))
+
+  description = "Set of objects mapping service names to ports for custom VPC Endpoint services. The key is used to provide a friendly name when accessing outputs."
+  default     = []
 }
 
 variable "gateway_vpce_route_table_ids" {

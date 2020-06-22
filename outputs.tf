@@ -6,9 +6,20 @@ output "interface_vpce_sg_id" {
   value = aws_security_group.vpc_endpoints.id
 }
 
+output "custom_vpce_sg_id" {
+  value = aws_security_group.custom_vpc_endpoints.id
+}
+
+output "custom_vpce_dns_names" {
+  value = {
+    for key in var.custom_vpce_services[*].key :
+    key => aws_vpc_endpoint.custom_vpc_endpoints[key].dns_entry[*].dns_name
+  }
+}
+
 output "prefix_list_ids" {
   value = {
-    for service in setintersection(local.gateway_services, var.aws_vpce_services):
+    for service in setintersection(local.gateway_services, var.aws_vpce_services) :
     service => aws_vpc_endpoint.aws_gateway_vpc_endpoints[service].prefix_list_id
   }
 }
@@ -19,10 +30,11 @@ output "ecr_dkr_domain_name" {
 
 output "no_proxy_list" {
   value = flatten(values({
-    for service in local.interface_endpoints_to_create :
-    service => aws_vpc_endpoint.aws_interface_vpc_endpoints[service].dns_entry[*].dns_name
+    for service in local.service_names_with_dns :
+    service => local.endpoint_resources_with_dns[service].dns_entry[*].dns_name
   }))
 }
+
 
 # Note that all of the outputs below are conditional, based on their respective
 # endpoints having been requested. Naively, you'd think the following would work:
