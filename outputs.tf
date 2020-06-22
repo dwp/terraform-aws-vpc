@@ -6,6 +6,24 @@ output "interface_vpce_sg_id" {
   value = aws_security_group.vpc_endpoints.id
 }
 
+output "prefix_list_ids" {
+  value = {
+    for service in setintersection(local.gateway_services, var.aws_vpce_services):
+    service => aws_vpc_endpoint.aws_gateway_vpc_endpoints[service].prefix_list_id
+  }
+}
+
+output "ecr_dkr_domain_name" {
+  value = "dkr.ecr.${var.region}.amazonaws.com"
+}
+
+output "no_proxy_list" {
+  value = flatten(values({
+    for service in local.interface_endpoints_to_create :
+    service => aws_vpc_endpoint.aws_interface_vpc_endpoints[service].dns_entry[*].dns_name
+  }))
+}
+
 # Note that all of the outputs below are conditional, based on their respective
 # endpoints having been requested. Naively, you'd think the following would work:
 # value = "${var.s3_endpoint ? aws_vpc_endpoint.s3.0.prefix_list_id : ""}"
@@ -18,13 +36,7 @@ output "interface_vpce_sg_id" {
 #    question, and the list from step 1)
 # 3. element() returns the first element of that newly combined list; it'll
 #    either be the resource's attribute, or an empty string
-output "s3_prefix_list_id" {
-  value = concat(aws_vpc_endpoint.s3.*.prefix_list_id, list(""))[0]
-}
 
-output "dynamodb_prefix_list_id" {
-  value = concat(aws_vpc_endpoint.dynamodb.*.prefix_list_id, list(""))[0]
-}
 
 output "ssm_iam_role_name" {
   value = concat(aws_iam_role.ssm.*.name, list(""))[0]
@@ -32,8 +44,4 @@ output "ssm_iam_role_name" {
 
 output "ssm_instance_profile_name" {
   value = concat(aws_iam_instance_profile.ssm.*.name, list(""))[0]
-}
-
-output "ecr_dkr_domain_name" {
-  value = "dkr.ecr.${var.region}.amazonaws.com"
 }

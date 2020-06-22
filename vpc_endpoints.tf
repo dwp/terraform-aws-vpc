@@ -1,6 +1,23 @@
-resource "aws_vpc_endpoint" "s3" {
-  count             = var.s3_endpoint ? 1 : 0
-  service_name      = "com.amazonaws.${var.region}.s3"
+resource "aws_vpc_endpoint" "aws_interface_vpc_endpoints" {
+  for_each = local.interface_endpoints_to_create
+
+  service_name        = "com.amazonaws.${var.region}.${each.value}"
+  vpc_id              = aws_vpc.vpc.id
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  subnet_ids          = var.interface_vpce_subnet_ids
+  private_dns_enabled = true
+
+  tags = merge(
+    var.common_tags,
+    { Name = var.vpc_name }
+  )
+}
+
+resource "aws_vpc_endpoint" "aws_gateway_vpc_endpoints" {
+  for_each = local.gateway_endpoints_to_create
+
+  service_name      = "com.amazonaws.${var.region}.${each.value}"
   vpc_id            = aws_vpc.vpc.id
   vpc_endpoint_type = "Gateway"
   route_table_ids   = var.gateway_vpce_route_table_ids
@@ -11,25 +28,13 @@ resource "aws_vpc_endpoint" "s3" {
   )
 }
 
-resource "aws_vpc_endpoint" "dynamodb" {
-  count             = var.dynamodb_endpoint ? 1 : 0
-  service_name      = "com.amazonaws.${var.region}.dynamodb"
-  vpc_id            = aws_vpc.vpc.id
-  vpc_endpoint_type = "Gateway"
-  route_table_ids   = var.gateway_vpce_route_table_ids
+resource "aws_vpc_endpoint" "custom_vpc_endpoints" {
+  for_each = var.custom_vpce_services
 
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "ssm" {
-  count               = var.ssm_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.ssm"
+  service_name        = each.key
   vpc_id              = aws_vpc.vpc.id
   vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  security_group_ids  = [aws_security_group.vpc_endpoints.id] #TODO
   subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
 
@@ -39,325 +44,6 @@ resource "aws_vpc_endpoint" "ssm" {
   )
 }
 
-resource "aws_vpc_endpoint" "ec2messages" {
-  count               = var.ec2messages_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.ec2messages"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "ec2" {
-  count               = var.ec2_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.ec2"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "ecrapi" {
-  count               = var.ecrapi_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.ecr.api"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "ecrdkr" {
-  count               = var.ecrdkr_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.ecr.dkr"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-}
-
-resource "aws_vpc_endpoint" "ecs" {
-  count               = var.ecs_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.ecs"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "ecs_agent" {
-  count               = var.ecs-agent_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.ecs-agent"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "ecs_telemetry" {
-  count               = var.ecs-agent_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.ecs-telemetry"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "ssmmessages" {
-  count               = var.ssmmessages_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.ssmmessages"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "kms" {
-  count               = var.kms_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.kms"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "logs" {
-  count               = var.logs_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.logs"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "monitoring" {
-  count               = var.monitoring_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.monitoring"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "sns" {
-  count               = var.sns_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.sns"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-}
-
-resource "aws_vpc_endpoint" "sqs" {
-  count               = var.sqs_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.sqs"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "glue" {
-  count               = var.glue_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.glue"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "secretsmanager" {
-  count               = var.secretsmanager_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.secretsmanager"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "elasticmapreduce" {
-  count               = var.emr_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.elasticmapreduce"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "ec2autoscaling" {
-  count               = var.ec2autoscaling_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.autoscaling"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "elasticloadbalancing" {
-  count               = var.elasticloadbalancing_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.elasticloadbalancing"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "events" {
-  count               = var.events_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.events"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    map("Name", var.vpc_name)
-  )
-}
-
-resource "aws_vpc_endpoint" "application_autoscaling" {
-  count               = var.application_autoscaling_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.application-autoscaling"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    map("Name", var.vpc_name)
-  )
-}
-
-resource "aws_vpc_endpoint" "kinesis-firehose" {
-  count               = var.kinesis_firehose_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.kinesis-firehose"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
-
-resource "aws_vpc_endpoint" "efs" {
-  count               = var.efs_endpoint ? 1 : 0
-  service_name        = "com.amazonaws.${var.region}.elasticfilesystem"
-  vpc_id              = aws_vpc.vpc.id
-  vpc_endpoint_type   = "Interface"
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
-  private_dns_enabled = true
-
-  tags = merge(
-    var.common_tags,
-    { Name = var.vpc_name }
-  )
-}
 
 resource "aws_security_group" "vpc_endpoints" {
   name        = "vpc-endpoints-${var.vpc_name}"

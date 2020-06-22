@@ -3,6 +3,25 @@ A Terraform module to create an AWS VPC with consistent features
 
 ## Usage
 
+### Migration: v2.x -> v3.x
+***Warning:*** Migrating from v2.x to v3.x will cause all VPC Endpoints to be destroyed
+and recreated, which may cause downtime.
+
+#### Breaking changes:
+ * VPC Endpoint services are now passed as a list, see [examples section](#adding-endpoints---v3x)
+ * Prefix list outputs are now grouped under a single output value and therefore
+ accessed differently: `prefix_list_ids.<service_name>`
+ (e.g.: `module.vpc.prefix_list_ids.dynamodb`)
+
+#### New features:
+ * The module now exposes the `no_proxy_list` output, which is a list of all the
+ VPC endpoint DNS names.
+   * This is useful in environments which use a proxy for internet egress to let
+   applications know not to use the proxy when connecting to AWS services which
+   have a VPC endpoint created.
+   * This list can be joined with `,` for use in `NO_PROXY` env vars or with `|`
+   for use in the JVM `http.nonProxyHosts` flag
+
 ### Default Configuration
 In its simplest form, this module will create a VPC with VPC Flow Logs enabled.
 As this results in a CloudWatch Logs VPC endpoint being created, you will need
@@ -24,7 +43,41 @@ module "vpc" {
 
 ### Examples
 
-#### Adding Endpoints
+#### Adding Endpoints - v3.x+
+
+Version 3 of this module changes the way VPC endpoints are passed to the module
+and created. The module now takes a list of AWS Service Names, and creates the
+correct endpoint for each of them.
+ 
+The names of the services are the ones found in the 
+[AWS Service Endpoints and Quotas documentation](https://docs.aws.amazon.com/general/latest/gr/aws-service-information.html),
+not including the full DNS name, as per the following example.
+
+```
+module "vpc" {
+  source                                     = "dwp/vpc/aws"
+  vpc_name                                   = "main"
+  region                                     = "eu-west-2"
+  vpc_cidr_block                             = "192.168.0.0/24"
+  interface_vpce_source_security_group_count = 1
+  interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
+  interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
+
+  aws_vpce_services = [
+    "logs",
+    "s3",
+    "dynamodb",
+    "ecr.dkr",
+    "ec2",
+    "ec2messages",
+    "kms",
+    "monitoring"
+  ]
+}
+```
+
+
+#### Adding Endpoints - v2.x
 
 The example below shows how to create a VPC with SNS and SQS VPC endpoints:
 
