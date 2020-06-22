@@ -12,6 +12,7 @@ and recreated, which may cause downtime.
  * Prefix list outputs are now grouped under a single output value and therefore
  accessed differently: `prefix_list_ids.<service_name>`
  (e.g.: `module.vpc.prefix_list_ids.dynamodb`)
+ * Variable `interface_vpce_source_security_group_count` no longer needed
 
 #### New features:
  * The module now exposes the `no_proxy_list` output, which is a list of all the

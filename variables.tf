@@ -15,13 +15,9 @@ variable "region" {
   description = "The region in which to deploy the VPC."
 }
 
-variable "interface_vpce_source_security_group_count" {
-  description = "The number of security group IDs given in interface_vpce_source_security_group_ids (to workaround https://github.com/hashicorp/terraform/issues/12570)."
-}
-
 variable "interface_vpce_source_security_group_ids" {
-  type        = list(string)
-  description = "A list of security group IDs that will be allowed to reach the Interface VPCs. Note that when setting this you must also set `interface_vpce_source_security_group_count` (see above)."
+  type        = set(string)
+  description = "A list of security group IDs that will be allowed to reach the Interface VPCs."
 }
 
 variable "interface_vpce_subnet_ids" {
