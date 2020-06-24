@@ -3,6 +3,28 @@ A Terraform module to create an AWS VPC with consistent features
 
 ## Usage
 
+### Migration: v2.x -> v3.x
+***Warning:*** Migrating from v2.x to v3.x will cause all VPC Endpoints to be destroyed
+and recreated, which may cause downtime.
+
+#### Breaking changes:
+ * VPC Endpoint services are now passed as a list, see [examples section](#adding-endpoints---v3x)
+ * Prefix list outputs are now grouped under a single output value and therefore
+ accessed differently: `prefix_list_ids.<service_name>`
+ (e.g.: `module.vpc.prefix_list_ids.dynamodb`)
+ * Variable `interface_vpce_source_security_group_count` no longer needed
+
+#### New features:
+ * The module now exposes the `no_proxy_list` output, which is a list of all the
+ VPC endpoint DNS names.
+   * This is useful in environments which use a proxy for internet egress to let
+   applications know not to use the proxy when connecting to AWS services which
+   have a VPC endpoint created.
+   * This list can be joined with `,` for use in `NO_PROXY` env vars or with `|`
+   for use in the JVM `http.nonProxyHosts` flag
+ * The module can now deploy VPC Endpoints for custom services, see
+ [examples section](#adding-endpoints-for-custom-services---v3x)
+
 ### Default Configuration
 In its simplest form, this module will create a VPC with VPC Flow Logs enabled.
 As this results in a CloudWatch Logs VPC endpoint being created, you will need
@@ -24,7 +46,72 @@ module "vpc" {
 
 ### Examples
 
-#### Adding Endpoints
+#### Adding Endpoints - v3.x+
+
+Version 3 of this module changes the way VPC endpoints are passed to the module
+and created. The module now takes a list of AWS Service Names, and creates the
+correct endpoint for each of them.
+ 
+The names of the services are the ones found in the 
+[AWS Service Endpoints and Quotas documentation](https://docs.aws.amazon.com/general/latest/gr/aws-service-information.html),
+not including the full DNS name, as per the following example.
+
+```hcl-terraform
+module "vpc" {
+  source                                     = "dwp/vpc/aws"
+  vpc_name                                   = "main"
+  region                                     = "eu-west-2"
+  vpc_cidr_block                             = "192.168.0.0/24"
+  interface_vpce_source_security_group_count = 1
+  interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
+  interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
+
+  aws_vpce_services = [
+    "logs",
+    "s3",
+    "dynamodb",
+    "ecr.dkr",
+    "ec2",
+    "ec2messages",
+    "kms",
+    "monitoring"
+  ]
+}
+```
+
+#### Adding Endpoints for custom services - v3.x+
+
+After version 3 this module can deploy VPC Endpoints for custom services, and creates security
+group rules to allow traffic to/from the custom service endpoints.
+
+```hcl-terraform
+module "vpc" {
+  source                                     = "dwp/vpc/aws"
+  vpc_name                                   = "main"
+  region                                     = "eu-west-2"
+  vpc_cidr_block                             = "192.168.0.0/24"
+  interface_vpce_source_security_group_count = 1
+  interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
+  interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
+
+  custom_vpce_services = [
+    {
+      key          = "my-service"
+      service_name = "com.amazonaws.vpce.eu-west-2.vpce-svc-abcd1234"
+      port         = 3128
+    }
+  ]
+}
+```
+The `key` is used to provide a friendly name when accessing the DNS name output:
+
+```hcl-terraform
+resource "aws_resource" "r" {
+  service_dns_name =  module.vpc.custom_vpce_dns_names["my-service"][0]
+}
+```
+
+#### Adding Endpoints - v2.x
 
 The example below shows how to create a VPC with SNS and SQS VPC endpoints:
 
