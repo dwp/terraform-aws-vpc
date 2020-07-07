@@ -17,5 +17,25 @@ locals {
   service_names_with_dns      = setunion(local.interface_endpoints_to_create, var.custom_vpce_services[*].key)
   endpoint_resources_with_dns = merge(aws_vpc_endpoint.custom_vpc_endpoints, aws_vpc_endpoint.aws_interface_vpc_endpoints)
 
+  if_vpces = [
+    for key, endpoint in aws_vpc_endpoint.aws_interface_vpc_endpoints : {
+      key = endpoint.service_name
+      id  = endpoint.id
+    }
+  ]
 
+  if_vpce_subnets = [
+    for key, subnet in var.interface_vpce_subnet_ids : {
+      key = key
+      id  = subnet
+    }
+  ]
+
+  if_vpce_subnet_assocs = [
+    for pair in setproduct(local.if_vpces, local.if_vpce_subnets) : {
+      service_name = pair[0].key
+      endpoint_id  = pair[0].id
+      subnet_id    = pair[1].id
+    }
+  ]
 }

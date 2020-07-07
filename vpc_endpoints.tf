@@ -5,13 +5,20 @@ resource "aws_vpc_endpoint" "aws_interface_vpc_endpoints" {
   vpc_id              = aws_vpc.vpc.id
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
 
   tags = merge(
     var.common_tags,
     { Name = var.vpc_name }
   )
+}
+
+resource "aws_vpc_endpoint_subnet_association" "aws_vpce_subnet_assoc" {
+  for_each = {
+    for assoc in local.if_vpce_subnet_assocs : "${assoc.service_name}.${assoc.subnet_id}" => assoc
+  }
+  vpc_endpoint_id = each.value.endpoint_id
+  subnet_id       = each.value.subnet_id
 }
 
 resource "aws_vpc_endpoint" "aws_gateway_vpc_endpoints" {
