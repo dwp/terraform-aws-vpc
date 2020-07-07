@@ -60,27 +60,25 @@ resource "aws_security_group" "vpc_endpoints" {
 }
 
 resource "aws_security_group_rule" "vpce_source_https_ingress" {
-  for_each = var.interface_vpce_source_security_group_ids
-
+  count                    = length(var.interface_vpce_source_security_group_ids)
   description              = "Accept VPCE traffic"
   type                     = "ingress"
   protocol                 = "tcp"
   from_port                = 443
   to_port                  = 443
-  source_security_group_id = each.value
+  source_security_group_id = var.interface_vpce_source_security_group_ids[count.index]
   security_group_id        = aws_security_group.vpc_endpoints.id
 }
 
 resource "aws_security_group_rule" "source_vpce_https_egress" {
-  for_each = var.interface_vpce_source_security_group_ids
-
+  count                    = length(var.interface_vpce_source_security_group_ids)
   description              = "Allow outbound requests to VPC endpoints"
   type                     = "egress"
   protocol                 = "tcp"
   from_port                = 443
   to_port                  = 443
   source_security_group_id = aws_security_group.vpc_endpoints.id
-  security_group_id        = each.value
+  security_group_id        = var.interface_vpce_source_security_group_ids[count.index]
 }
 
 resource "aws_security_group" "custom_vpc_endpoints" {
