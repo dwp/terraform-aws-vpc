@@ -16,7 +16,7 @@ variable "region" {
 }
 
 variable "interface_vpce_source_security_group_ids" {
-  type        = set(string)
+  type        = list(string)
   description = "A list of security group IDs that will be allowed to reach the Interface VPCs."
 }
 
