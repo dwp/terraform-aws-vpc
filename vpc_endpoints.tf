@@ -1,11 +1,10 @@
 resource "aws_vpc_endpoint" "aws_interface_vpc_endpoints" {
-  for_each = local.interface_endpoints_to_create
+  count = length(local.interface_endpoints_to_create)
 
-  service_name        = "com.amazonaws.${var.region}.${each.value}"
+  service_name        = "com.amazonaws.${var.region}.${local.interface_endpoints_to_create[count.index]}"
   vpc_id              = aws_vpc.vpc.id
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  subnet_ids          = var.interface_vpce_subnet_ids
   private_dns_enabled = true
 
   tags = merge(
@@ -13,6 +12,13 @@ resource "aws_vpc_endpoint" "aws_interface_vpc_endpoints" {
     { Name = var.vpc_name }
   )
 }
+
+resource "aws_vpc_endpoint_subnet_association" "aws_interface_vpc_endpoints_association" {
+  count           = length(local.vpce_subnet_combinations)
+  vpc_endpoint_id = local.vpce_subnet_combinations[count.index].vpce_id
+  subnet_id       = local.vpce_subnet_combinations[count.index].subnet_id
+}
+
 
 resource "aws_vpc_endpoint" "aws_gateway_vpc_endpoints" {
   for_each = local.gateway_endpoints_to_create

@@ -41,8 +41,8 @@ variable "vpc_flow_log_traffic_type" {
 }
 
 variable "aws_vpce_services" {
-  type        = set(string)
-  description = "Set of AWS Service names to create VPC Endpoints for. By default only the 'logs' service endpoint is provided"
+  type        = list(string)
+  description = "A list of AWS Service names to create VPC Endpoints for. By default only the 'logs' service endpoint is provided"
   default     = ["logs"]
 }
 
