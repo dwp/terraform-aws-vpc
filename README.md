@@ -38,7 +38,6 @@ module "vpc" {
   vpc_name                                   = "main"
   region                                     = "eu-west-2"
   vpc_cidr_block                             = "192.168.0.0/24"
-  interface_vpce_source_security_group_count = 1
   interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
   interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
 }
@@ -51,8 +50,8 @@ module "vpc" {
 Version 3 of this module changes the way VPC endpoints are passed to the module
 and created. The module now takes a list of AWS Service Names, and creates the
 correct endpoint for each of them.
- 
-The names of the services are the ones found in the 
+
+The names of the services are the ones found in the
 [AWS Service Endpoints and Quotas documentation](https://docs.aws.amazon.com/general/latest/gr/aws-service-information.html),
 not including the full DNS name, as per the following example.
 
@@ -62,7 +61,6 @@ module "vpc" {
   vpc_name                                   = "main"
   region                                     = "eu-west-2"
   vpc_cidr_block                             = "192.168.0.0/24"
-  interface_vpce_source_security_group_count = 1
   interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
   interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
 
@@ -90,7 +88,6 @@ module "vpc" {
   vpc_name                                   = "main"
   region                                     = "eu-west-2"
   vpc_cidr_block                             = "192.168.0.0/24"
-  interface_vpce_source_security_group_count = 1
   interface_vpce_source_security_group_ids   = ["${aws_security_group.source.id}"]
   interface_vpce_subnet_ids                  = ["${aws_subnet.main.id}"]
 
