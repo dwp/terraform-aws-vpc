@@ -28,11 +28,12 @@ output "ecr_dkr_domain_name" {
   value = "dkr.ecr.${var.region}.amazonaws.com"
 }
 
+locals {
+  s3_no_proxy = contains(var.aws_vpce_services, "s3") ? [".s3.${var.region}.amazonaws.com"] : []
+}
+
 output "no_proxy_list" {
-  value = flatten(values({
-    for service in local.service_names_with_dns :
-    service => local.endpoint_resources_with_dns[service].dns_entry[*].dns_name
-  }))
+  value = concat(["169.254.169.254"], formatlist("%s.%s.amazonaws.com", var.aws_vpce_services, var.region), local.s3_no_proxy)
 }
 
 
