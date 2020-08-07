@@ -30,12 +30,12 @@ output "ecr_dkr_domain_name" {
 
 locals {
   s3_no_proxy = contains(var.aws_vpce_services, "s3") ? [".s3.${var.region}.amazonaws.com"] : []
-  ecr_no_proxy = contains(var.aws_vpce_services, "ecr.api") ? ["api.ecr.${var.region}.amazonaws.com"] : []
-  ecr_no_proxy = contains(var.aws_vpce_services, "ecr.dkr") ? ["dkr.ecr.${var.region}.amazonaws.com"] : []
+  ecr_api_no_proxy = contains(var.aws_vpce_services, "ecr.api") ? ["api.ecr.${var.region}.amazonaws.com"] : []
+  ecr_dkr_no_proxy = contains(var.aws_vpce_services, "ecr.dkr") ? ["dkr.ecr.${var.region}.amazonaws.com"] : []
 }
 
 output "no_proxy_list" {
-  value = concat(["169.254.169.254"], formatlist("%s.%s.amazonaws.com", var.aws_vpce_services, var.region), local.s3_no_proxy, local.ecr_no_proxy)
+  value = concat(["169.254.169.254"], formatlist("%s.%s.amazonaws.com", var.aws_vpce_services, var.region), local.s3_no_proxy, local.ecr_api_no_proxy, local.ecr_dkr_no_proxy)
 }
 
 
