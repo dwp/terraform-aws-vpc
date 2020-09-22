@@ -37,7 +37,7 @@ locals {
 }
 
 output "no_proxy_list" {
-  value = concat(["169.254.169.254"], formatlist("%s.%s.amazonaws.com", var.aws_vpce_services, var.region), local.s3_no_proxy, local.ecr_api_no_proxy, local.ecr_dkr_no_proxy, local.emr_no_proxy, local.sqs_no_proxy)
+  value = concat(["169.254.169.254", "127.0.0.1", "localhost"], formatlist("%s.%s.amazonaws.com", var.aws_vpce_services, var.region), local.s3_no_proxy, local.ecr_api_no_proxy, local.ecr_dkr_no_proxy, local.emr_no_proxy, local.sqs_no_proxy)
 }
 
 
