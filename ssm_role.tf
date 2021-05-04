@@ -8,7 +8,7 @@ resource "aws_iam_role" "ssm" {
 resource "aws_iam_role_policy_attachment" "ec2_for_ssm_attachment" {
   count      = contains(var.aws_vpce_services, "ssm") ? 1 : 0
   role       = aws_iam_role.ssm[count.index].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonSSMManagedInstanceCore"
 }
 
 data "aws_iam_policy_document" "ec2_assume_role" {
