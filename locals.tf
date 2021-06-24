@@ -1,5 +1,5 @@
 locals {
-  gateway_services = ["dynamodb"]
+  gateway_services = ["dynamodb", "s3"]
 
   # This essentially implements the 'setsubtract' function available in Terraform v.0.12.21 and later
   interface_endpoints_to_create = toset([
