@@ -27,9 +27,9 @@ output "prefix_list_ids" {
 output "ecr_dkr_domain_name" {
   value = "dkr.ecr.${var.region}.amazonaws.com"
 }
-
 locals {
   s3_no_proxy      = contains(var.aws_vpce_services, "s3") ? [".s3.${var.region}.amazonaws.com"] : []
+  s3_path_no_proxy = contains(var.aws_vpce_services, "s3") ? ["*.s3.${var.region}.amazonaws.com"] : []
   ecr_api_no_proxy = contains(var.aws_vpce_services, "ecr.api") ? ["api.ecr.${var.region}.amazonaws.com"] : []
   ecr_dkr_no_proxy = contains(var.aws_vpce_services, "ecr.dkr") ? [".dkr.ecr.${var.region}.amazonaws.com"] : []
   emr_no_proxy     = contains(var.aws_vpce_services, "elasticmapreduce") ? ["${var.region}.elasticmapreduce.amazonaws.com"] : []
@@ -37,7 +37,7 @@ locals {
 }
 
 output "no_proxy_list" {
-  value = concat(["169.254.169.254", "127.0.0.1", "localhost"], formatlist("%s.%s.amazonaws.com", var.aws_vpce_services, var.region), local.s3_no_proxy, local.ecr_api_no_proxy, local.ecr_dkr_no_proxy, local.emr_no_proxy, local.sqs_no_proxy)
+  value = concat(["169.254.169.254", "127.0.0.1", "localhost"], formatlist("%s.%s.amazonaws.com", var.aws_vpce_services, var.region), local.s3_no_proxy, local.ecr_api_no_proxy, local.ecr_dkr_no_proxy, local.emr_no_proxy, local.sqs_no_proxy, local.s3_path_no_proxy)
 }
 
 
