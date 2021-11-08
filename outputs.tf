@@ -57,9 +57,9 @@ output "no_proxy_list" {
 
 
 output "ssm_iam_role_name" {
-  value = concat(aws_iam_role.ssm.*.name, list(""))[0]
+  value = concat(aws_iam_role.ssm.*.name, tolist([""]))[0]
 }
 
 output "ssm_instance_profile_name" {
-  value = concat(aws_iam_instance_profile.ssm.*.name, list(""))[0]
+  value = concat(aws_iam_instance_profile.ssm.*.name, tolist([""]))[0]
 }
