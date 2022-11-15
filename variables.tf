@@ -65,3 +65,7 @@ variable "gateway_vpce_route_table_ids" {
 variable "common_tags" {
   default = {}
 }
+
+variable "hcs_tags" {
+  default = {}
+}
