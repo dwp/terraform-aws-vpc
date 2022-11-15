@@ -5,8 +5,8 @@ resource "aws_vpc" "vpc" {
 
   tags = merge(
     var.common_tags,
-    { Name = var.vpc_name },
-    var.hcs_tags
+    var.hcs_tags,
+    { Name = var.vpc_name }
   )
 }
 
