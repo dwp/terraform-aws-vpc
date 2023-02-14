@@ -1,0 +1,12 @@
+groups:
+- name: master
+  jobs:
+  - development
+
+- name: pull-request
+  jobs:
+  - terraform-aws-vpc
+
+- name: update-pipeline
+  jobs:
+  - update-pipeline

@@ -4,8 +4,13 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
+go.mod
+go.sum
 
 # .tfvars files
 *.tfvars
 
 ci/terraform.tf
+
+**/example/.terraform
+**/example/.terraform*

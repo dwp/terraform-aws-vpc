@@ -1,0 +1,44 @@
+meta:
+  plan:
+    terraform-common-config:
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: hashicorp/terraform
+            tag: ((dataworks.terraform_version))
+      params:
+        TF_INPUT: false
+        TF_CLI_ARGS_apply: -lock-timeout=300s
+        TF_CLI_ARGS_plan: -lock-timeout=300s
+        TF_VAR_slack_webhook_url: ((dataworks.slack_webhook_url))
+        TF_VAR_costcode: ((dataworks.costcode))
+
+    terraform-terratest:
+      task: terraform-terratest
+      .: (( inject meta.plan.terraform-common-config ))
+      config:
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            rm -rf /usr/local/go && tar -C /usr/local -xzf go1.20.linux-amd64.tar.gz
+            export PATH=$PATH:/usr/local/go/bin
+
+            cp ../example/main.tf .
+            cp ../example/outputs.tf .
+            cp ../example/versions.tf .
+            go mod init vpc
+            go mod tidy
+            cd tests/terratest
+            go test -v -timeout 30m vpc_test.go
+
+
+        inputs:
+          - name: terraform-config
+
+
+
+

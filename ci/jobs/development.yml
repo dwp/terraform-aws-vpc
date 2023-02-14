@@ -1,0 +1,9 @@
+jobs:
+- name: development
+  plan:
+  - get: terraform-aws-vpc
+    trigger: true
+  - .: (( inject meta.plan.terraform-terratest ))
+    config:
+      run:
+        dir: 'terraform-aws-vpc/example'

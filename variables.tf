@@ -18,11 +18,13 @@ variable "region" {
 variable "interface_vpce_source_security_group_ids" {
   type        = list(string)
   description = "A list of security group IDs that will be allowed to reach the Interface VPCs."
+  default     = []
 }
 
 variable "interface_vpce_subnet_ids" {
   type        = list(string)
   description = "A list of subnet IDs that all Interface VPC endpoints will be attached to"
+  default     = []
 }
 
 variable "vpc_enable_dns_hostnames" {
