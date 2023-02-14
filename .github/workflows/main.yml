@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       publish-version: ${{ steps.get-publish-version.outputs.publish-version }}
-    steps:   
+    steps:
       - name: Prepare SemVer
         id: prepare-semver
         run: |
@@ -38,13 +38,13 @@ jobs:
         with:
           semver-input: ${{ steps.prepare-semver.outputs.latest_version_out }}
           increment: ${{ steps.prepare-semver.outputs.semver_increment }}
-      
+
       - name: Get publish version
         id: get-publish-version
         run: |
           echo "publish-version=${{ steps.semver.outputs.semver }}" >> $GITHUB_OUTPUT
-  
-  
+
+
   build-and-publish-github-release:
     runs-on: ubuntu-latest
     needs: [get-publish-version]
@@ -56,7 +56,7 @@ jobs:
         run: |
           mkdir -p artifacts
           cp LICENSE artifacts
-      
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@latest

@@ -38,7 +38,3 @@ meta:
 
         inputs:
           - name: terraform-config
-
-
-
-

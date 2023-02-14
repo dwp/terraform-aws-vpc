@@ -1,17 +1,21 @@
 variable "vpc_name" {
+  type        = string
   description = "The name of the VPC."
 }
 
 variable "vpc_cidr_block" {
+  type        = string
   description = "The CIDR block of the VPC."
 }
 
 variable "vpc_instance_tenancy" {
+  type        = string
   default     = "default"
   description = "Tenancy of instances spun up within the VPC (`default`, `dedicated`).)"
 }
 
 variable "region" {
+  type        = string
   description = "The region in which to deploy the VPC."
 }
 
@@ -28,16 +32,19 @@ variable "interface_vpce_subnet_ids" {
 }
 
 variable "vpc_enable_dns_hostnames" {
+  type        = bool
   default     = true
   description = "A boolean flag to enable/disable DNS hostnames in the VPC. Defaults to true."
 }
 
 variable "vpc_flow_log_retention_days" {
+  type        = string
   default     = 180
   description = "The number of days to retain VPC flow logs in CloudWatch for. Defaults to 180."
 }
 
 variable "vpc_flow_log_traffic_type" {
+  type        = string
   default     = "ALL"
   description = "The type of traffic ('ACCEPT', 'REJECT', or 'ALL') to log. Defaults to 'ALL'."
 }
@@ -60,14 +67,19 @@ variable "custom_vpce_services" {
 }
 
 variable "gateway_vpce_route_table_ids" {
+  type        = list(string)
   default     = []
   description = "A list of one or more route table IDs for Gateway VPC Endpoint rules to be added to."
 }
 
 variable "common_tags" {
-  default = {}
+  type        = map(string)
+  description = "Common Tags"
+  default     = {}
 }
 
 variable "hcs_tags" {
-  default = {}
+  type        = map(string)
+  description = "Common Tags"
+  default     = {}
 }

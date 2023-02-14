@@ -4,7 +4,7 @@ locals {
   # This essentially implements the 'setsubtract' function available in Terraform v.0.12.21 and later
   interface_endpoints_to_create = toset([
     for service in var.aws_vpce_services :
-    service if ! contains(local.gateway_services, service)
+    service if !contains(local.gateway_services, service)
   ])
 
   gateway_endpoints_to_create = setintersection(var.aws_vpce_services, local.gateway_services)
