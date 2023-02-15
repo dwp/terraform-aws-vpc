@@ -23,7 +23,6 @@ meta:
           args:
           - -exc
           - |
-            pip install pre-commit
             pre-commit install
             pre-commit run --all-files
           dir: terraform-aws-vpc
