@@ -9,6 +9,9 @@ jobs:
       context: $BUILD_JOB_NAME
       path: terraform-aws-vpc-pr
       status: pending
+  - .: (( inject meta.plan.terraform-bootstrap ))
+    input_mapping:
+      terraform-aws-vpc: terraform-aws-vpc-pr
   - task: pre-checks
     .: (( inject meta.plan.pre-checks ))
     input_mapping:
