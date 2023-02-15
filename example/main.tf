@@ -14,6 +14,11 @@ variable "assume_role" {
   description = "Role to assume"
 }
 
+variable "test_account" {
+  type        = string
+  description = "Test AWS Account number"
+
+}
 
 
 module "vpc" {

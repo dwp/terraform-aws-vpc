@@ -83,9 +83,3 @@ variable "hcs_tags" {
   description = "Common Tags"
   default     = {}
 }
-
-variable "test_account" {
-  type        = string
-  description = "Test AWS Account number"
-
-}
