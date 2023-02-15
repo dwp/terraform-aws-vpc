@@ -16,7 +16,7 @@ meta:
             - -exc
             - |
               python ./example/bootstrap_terraform.py
-              cp terraform.* ../terraform-config
+              cp ./example/terraform.* ../terraform-config
           dir: terraform-aws-vpc
         inputs:
           - name: terraform-aws-vpc
