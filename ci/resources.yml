@@ -7,15 +7,6 @@ resources:
   check_every: 5m
   webhook_token: ((dataworks.concourse_github_webhook_token))
 
-- name: terraform-aws-vpc
-  type: git
-  source:
-    branch: master
-    access_token: ((dataworks-secrets.concourse_github_pat))
-    uri: https://github.com/dwp/terraform-aws-vpc.git
-  check_every: 5m
-  webhook_token: ((dataworks.concourse_github_webhook_token))
-
 - name: terraform-aws-vpc-update-pipeline
   type: git
   source:

@@ -9,26 +9,12 @@ jobs:
       context: $BUILD_JOB_NAME
       path: terraform-aws-vpc-pr
       status: pending
-  - .: (( inject meta.plan.terraform-bootstrap ))
-    params:
-      DEPLOY_PATH: app
+  - task: pre-checks
+    .: (( inject meta.plan.pre-checks ))
     input_mapping:
       terraform-aws-vpc: terraform-aws-vpc-pr
-  - task: terraform-plan-app
-    .: (( inject meta.plan.terraform-common-config ))
-    config:
-      run:
-        path: sh
-        dir: terraform-aws-vpc/example
-        args:
-        - -exc
-        - |
-          cp *.tf .
-          terraform init
-          terraform workspace show
-          terraform plan -var assume_role=ci
-      inputs:
-      - name: terraform-aws-vpc
+  - task: terraform-terratest
+    .: (( inject meta.plan.terraform-terratest ))
     input_mapping:
       terraform-aws-vpc: terraform-aws-vpc-pr
     on_failure:

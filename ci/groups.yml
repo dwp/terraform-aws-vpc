@@ -1,11 +1,7 @@
 groups:
-- name: master
-  jobs:
-  - development
-
 - name: pull-request
   jobs:
-  - terraform-aws-vpc
+  - terraform-aws-vpc-pr
 
 - name: update-pipeline
   jobs:
