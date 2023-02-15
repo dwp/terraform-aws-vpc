@@ -2,7 +2,7 @@ provider "aws" {
   region = "eu-west-1"
 
   assume_role {
-    role_arn = "arn:aws:iam::${local.account["development"]}:role/${var.assume_role}"
+    role_arn = "arn:aws:iam::${var.test_account}:role/${var.assume_role}"
   }
 
 }
