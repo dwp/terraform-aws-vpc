@@ -1,0 +1,47 @@
+meta:
+  plan:
+    terraform-common-config:
+      config:
+        platform: linux
+        image_resource:
+          type: registry-image
+          source:
+            repository: dwpdigital/all-terra-tools-docker
+      params:
+        TF_INPUT: false
+        TF_CLI_ARGS_apply: -lock-timeout=300s
+        TF_CLI_ARGS_plan: -lock-timeout=300s
+        TF_VAR_slack_webhook_url: ((dataworks.slack_webhook_url))
+        TF_VAR_costcode: ((dataworks.costcode))
+
+    pre-checks:
+      task: pre-checks
+      .: (( inject meta.plan.terraform-common-config ))
+      config:
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            pre-commit install
+            pre-commit run --all-files
+          dir: terraform-aws-vpc
+        inputs:
+          - name: terraform-aws-vpc
+
+    terraform-terratest:
+      task: terraform-terratest
+      .: (( inject meta.plan.terraform-common-config ))
+      config:
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            go mod init vpc
+            go mod tidy
+            cd tests/terratest
+            go test -v -timeout 30m vpc_test.go
+          dir: terraform-aws-vpc
+        inputs:
+          - name: terraform-aws-vpc
