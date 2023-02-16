@@ -16,11 +16,12 @@ meta:
             - -exc
             - |
               python ./example/bootstrap_terraform.py
-              cp ./example/terraform.* ../terraform-config
+              cp ./example/terraform.tfvars ../terraform-config
           dir: terraform-aws-vpc
         inputs:
           - name: terraform-aws-vpc
         outputs:
+          - name: terraform-aws-vpc
           - name: terraform-config
       params:
         AWS_REGION: eu-west-2
@@ -53,7 +54,6 @@ meta:
           dir: terraform-aws-vpc
         inputs:
           - name: terraform-aws-vpc
-          - name: terraform-config
 
     terraform-terratest:
       task: terraform-terratest
@@ -64,6 +64,7 @@ meta:
           args:
           - -exc
           - |
+            cp ../terraform-config/terraform.tfvars ./example
             go mod init vpc
             go mod tidy
             cd tests/terratest
