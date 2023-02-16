@@ -2,7 +2,8 @@ provider "aws" {
   region = "eu-west-1"
 
   assume_role {
-    role_arn = "arn:aws:iam::${local.account["development"]}:role/${var.assume_role}"
+    role_arn = "arn:aws:iam::${var.test_account}:role/${var.assume_role}"
+
   }
 
 }
@@ -13,6 +14,11 @@ variable "assume_role" {
   description = "Role to assume"
 }
 
+variable "test_account" {
+  type        = string
+  description = "Test AWS Account number"
+
+}
 
 
 module "vpc" {
