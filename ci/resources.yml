@@ -1,4 +1,14 @@
 resources:
+- name: terraform-aws-vpc
+  type: git
+  source:
+    branch: test
+    username: ((dataworks.enterprise_github_username))
+    password: ((dataworks-secrets.enterprise_github_pat))
+    uri: https://((dataworks.enterprise_github_url))/dip/terraform-aws-vpc.git
+  check_every: 5m
+  webhook_token: ((dataworks.concourse_github_webhook_token))
+
 - name: terraform-aws-vpc-pr
   type: pull-request
   source:
@@ -18,3 +28,8 @@ resources:
       - aviator.yml
   check_every: 5m
   webhook_token: ((dataworks.concourse_github_webhook_token))
+
+- name: slack
+  type: slack-notification
+  source:
+    url: ((dataworks.slack_webhook_url))

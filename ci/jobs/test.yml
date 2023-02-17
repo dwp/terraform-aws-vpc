@@ -1,0 +1,35 @@
+jobs:
+- name: test
+  plan:
+  - get: terraform-aws-vpc
+    trigger: true
+    version: every
+  - put: terraform-aws-vpc
+    params:
+      context: $BUILD_JOB_NAME
+      path: terraform-aws-vpc
+      status: pending
+  - .: (( inject meta.plan.terraform-bootstrap ))
+    input_mapping:
+      terraform-aws-vpc: terraform-aws-vpc
+  # - task: pre-checks
+  #   .: (( inject meta.plan.pre-checks ))
+  #   input_mapping:
+  #     terraform-aws-vpc: terraform-aws-vpc
+  - task: terraform-terratest
+    .: (( inject meta.plan.terraform-terratest ))
+    input_mapping:
+      terraform-aws-vpc: terraform-aws-vpc
+    on_failure:
+      put: terraform-aws-vpc
+      params:
+        context: $BUILD_JOB_NAME
+        path: terraform-aws-vpc
+        status: failure
+    on_success:
+      put: terraform-aws-vpc
+      params:
+        context: $BUILD_JOB_NAME
+        path: terraform-aws-vpc
+        status: success
+  .: (( inject meta.plan.notify ))
