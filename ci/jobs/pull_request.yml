@@ -16,10 +16,6 @@ jobs:
     .: (( inject meta.plan.pre-checks ))
     input_mapping:
       terraform-aws-vpc: terraform-aws-vpc-pr
-  # - task: terraform-terratest
-  #   .: (( inject meta.plan.terraform-terratest ))
-  #   input_mapping:
-  #     terraform-aws-vpc: terraform-aws-vpc-pr
     on_failure:
       put: terraform-aws-vpc-pr
       params:
