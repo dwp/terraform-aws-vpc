@@ -16,4 +16,3 @@ ci/terraform.tf
 **/example/.terraform*
 
 aviator_pipeline.yml
-

@@ -17,7 +17,7 @@ func TestVPC(t *testing.T) {
 
 	// AWS Region set as eu-west-1 as standard.
 	awsRegion := "eu-west-1"
-	
+
 
 	// set up variables for other module variables so assertions may be made on them later
 
