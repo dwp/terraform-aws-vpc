@@ -1,0 +1,14 @@
+jobs:
+- name: test
+  plan:
+  - get: terraform-aws-vpc
+    trigger: true
+    version: every
+  - .: (( inject meta.plan.terraform-bootstrap ))
+    input_mapping:
+      terraform-aws-vpc: terraform-aws-vpc
+  - task: terraform-terratest
+    .: (( inject meta.plan.terraform-terratest ))
+    input_mapping:
+      terraform-aws-vpc: terraform-aws-vpc
+  .: (( inject meta.plan.notify ))
