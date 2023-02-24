@@ -16,4 +16,8 @@ jobs:
     .: (( inject meta.plan.terraform-terratest ))
     input_mapping:
       terraform-aws-vpc: terraform-aws-vpc-test
+  - put: terraform-aws-vpc
+    params:
+      repository: terraform-aws-vpc-test
+      merge: true
   .: (( inject meta.plan.notify ))
