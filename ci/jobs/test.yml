@@ -1,9 +1,14 @@
 jobs:
 - name: test
   plan:
-  - get: terraform-aws-vpc
+  - get: terraform-aws-vpc-test
     trigger: true
     version: every
+  - get: terraform-aws-vpc
+  - put: terraform-aws-vpc-test
+    params:
+      repository: terraform-aws-vpc
+      merge: true
   - .: (( inject meta.plan.terraform-bootstrap ))
     input_mapping:
       terraform-aws-vpc: terraform-aws-vpc
