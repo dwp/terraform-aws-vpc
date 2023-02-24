@@ -11,9 +11,9 @@ jobs:
       merge: true
   - .: (( inject meta.plan.terraform-bootstrap ))
     input_mapping:
-      terraform-aws-vpc: terraform-aws-vpc
+      terraform-aws-vpc: terraform-aws-vpc-test
   - task: terraform-terratest
     .: (( inject meta.plan.terraform-terratest ))
     input_mapping:
-      terraform-aws-vpc: terraform-aws-vpc
+      terraform-aws-vpc: terraform-aws-vpc-test
   .: (( inject meta.plan.notify ))
