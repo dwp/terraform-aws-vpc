@@ -208,3 +208,78 @@ further information
 * s3 (if using private images from ECR)
 * [ECS docs](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/vpc-endpoints.html)
 * [ECR docs](https://docs.aws.amazon.com/AmazonECR/latest/userguide/vpc-endpoints.html)
+
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_cloudwatch_log_group.vpc_flow_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_default_security_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
+| [aws_flow_log.flow_log](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/flow_log) | resource |
+| [aws_iam_instance_profile.ssm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_role.ssm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role.vpc_flow_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.vpc_flow_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy_attachment.ec2_for_ssm_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_security_group.custom_vpc_endpoints](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group.vpc_endpoints](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group_rule.custom_vpce_source_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.source_custom_vpce_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.source_vpce_https_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.vpce_source_https_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
+| [aws_vpc_endpoint.aws_gateway_vpc_endpoints](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_vpc_endpoint.aws_interface_vpc_endpoints](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_vpc_endpoint.custom_vpc_endpoints](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_iam_policy_document.ec2_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.vpc_flow_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.vpc_flow_logs_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_aws_vpce_services"></a> [aws\_vpce\_services](#input\_aws\_vpce\_services) | Set of AWS Service names to create VPC Endpoints for. By default only the 'logs' service endpoint is provided | `set(string)` | <pre>[<br>  "logs"<br>]</pre> | no |
+| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Common Tags | `map(string)` | `{}` | no |
+| <a name="input_custom_vpce_services"></a> [custom\_vpce\_services](#input\_custom\_vpce\_services) | Set of objects mapping service names to ports for custom VPC Endpoint services. The key is used to provide a friendly name when accessing outputs. | <pre>set(object({<br>    key          = string<br>    service_name = string<br>    port         = number<br>  }))</pre> | `[]` | no |
+| <a name="input_gateway_vpce_route_table_ids"></a> [gateway\_vpce\_route\_table\_ids](#input\_gateway\_vpce\_route\_table\_ids) | A list of one or more route table IDs for Gateway VPC Endpoint rules to be added to. | `list(string)` | `[]` | no |
+| <a name="input_hcs_tags"></a> [hcs\_tags](#input\_hcs\_tags) | Common Tags | `map(string)` | `{}` | no |
+| <a name="input_interface_vpce_source_security_group_ids"></a> [interface\_vpce\_source\_security\_group\_ids](#input\_interface\_vpce\_source\_security\_group\_ids) | A list of security group IDs that will be allowed to reach the Interface VPCs. | `list(string)` | `[]` | no |
+| <a name="input_interface_vpce_subnet_ids"></a> [interface\_vpce\_subnet\_ids](#input\_interface\_vpce\_subnet\_ids) | A list of subnet IDs that all Interface VPC endpoints will be attached to | `list(string)` | `[]` | no |
+| <a name="input_region"></a> [region](#input\_region) | The region in which to deploy the VPC. | `string` | n/a | yes |
+| <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The CIDR block of the VPC. | `string` | n/a | yes |
+| <a name="input_vpc_enable_dns_hostnames"></a> [vpc\_enable\_dns\_hostnames](#input\_vpc\_enable\_dns\_hostnames) | A boolean flag to enable/disable DNS hostnames in the VPC. Defaults to true. | `bool` | `true` | no |
+| <a name="input_vpc_flow_log_retention_days"></a> [vpc\_flow\_log\_retention\_days](#input\_vpc\_flow\_log\_retention\_days) | The number of days to retain VPC flow logs in CloudWatch for. Defaults to 180. | `string` | `180` | no |
+| <a name="input_vpc_flow_log_traffic_type"></a> [vpc\_flow\_log\_traffic\_type](#input\_vpc\_flow\_log\_traffic\_type) | The type of traffic ('ACCEPT', 'REJECT', or 'ALL') to log. Defaults to 'ALL'. | `string` | `"ALL"` | no |
+| <a name="input_vpc_instance_tenancy"></a> [vpc\_instance\_tenancy](#input\_vpc\_instance\_tenancy) | Tenancy of instances spun up within the VPC (`default`, `dedicated`).) | `string` | `"default"` | no |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | The name of the VPC. | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_custom_vpce_dns_names"></a> [custom\_vpce\_dns\_names](#output\_custom\_vpce\_dns\_names) | Custom VPCE DNS Names |
+| <a name="output_custom_vpce_sg_id"></a> [custom\_vpce\_sg\_id](#output\_custom\_vpce\_sg\_id) | Custom VPCE SG endpoint ID |
+| <a name="output_ecr_dkr_domain_name"></a> [ecr\_dkr\_domain\_name](#output\_ecr\_dkr\_domain\_name) | ECR dkr domain name |
+| <a name="output_interface_vpce_sg_id"></a> [interface\_vpce\_sg\_id](#output\_interface\_vpce\_sg\_id) | VPCE SG endpoint ID |
+| <a name="output_no_proxy_list"></a> [no\_proxy\_list](#output\_no\_proxy\_list) | No\_proxy List |
+| <a name="output_prefix_list_ids"></a> [prefix\_list\_ids](#output\_prefix\_list\_ids) | Prefix List ID's |
+| <a name="output_ssm_iam_role_name"></a> [ssm\_iam\_role\_name](#output\_ssm\_iam\_role\_name) | SSM IAM Role Name |
+| <a name="output_ssm_instance_profile_name"></a> [ssm\_instance\_profile\_name](#output\_ssm\_instance\_profile\_name) | SSM IAM instance profile Name |
+| <a name="output_vpc"></a> [vpc](#output\_vpc) | VPC Details |
+<!-- END_TF_DOCS -->
